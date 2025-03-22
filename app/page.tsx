@@ -52,7 +52,7 @@ export default function Home() {
       <div className="container mx-auto mb-5 w-full max-w-8/10">
         <Pagination />
       </div>
-      <div className="bg-blue-500/10 dark:bg-blue-500/20">
+      <div className="bg-gradient-to-b from-blue-500/20 to-transparent dark:to-gray-800">
         <div className="container mx-auto w-full max-w-8/10 pb-5">
           <div className="relative py-12 text-center">
             <h2 className="relative inline-block bg-gradient-to-b from-black to-blue-500 bg-clip-text text-5xl font-bold text-transparent max-sm:text-3xl dark:from-gray-300 dark:text-white">

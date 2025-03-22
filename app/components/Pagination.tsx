@@ -54,7 +54,7 @@ export default function Pagination() {
       ))}
 
       <div className="mt-4 flex flex-col items-center">
-        <span className="text-sm text-gray-700 dark:text-gray-400">
+        <span className="text-sm text-gray-700 dark:text-gray-400 pointer-events-none select-none">
           Page <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> of <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span>{" "}
         </span>
         <div className="xs:mt-0 mt-2 flex gap-2">
@@ -63,14 +63,14 @@ export default function Pagination() {
             disabled={currentPage === 1}
             className="flex h-10 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white px-4 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 active:not-disabled:-translate-x-1 active:not-disabled:scale-y-[0.9] disabled:cursor-not-allowed disabled:opacity-75 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
-            Prev
+            <span className="pointer-events-none select-none">Prev</span>
           </button>
           <button
             onClick={handleNext}
             disabled={currentPage === totalPages}
             className="active::not-disabled:translate-x-1 flex h-10 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white px-4 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 active:not-disabled:scale-y-[0.9] disabled:cursor-not-allowed disabled:opacity-75 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
-            Next
+            <span className="pointer-events-none select-none">Next</span>
           </button>
         </div>
       </div>
