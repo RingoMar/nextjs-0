@@ -1,103 +1,69 @@
 import Image from "next/image";
+import Link from "next/link";
+import backgroundImage from "../public/topography.svg";
+import Pagination from "./components/Pagination";
+import PoweredBy from "./components/powerd";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      <div className="animate-scroll w-full bg-slate-500/60" style={{ backgroundImage: `url(${backgroundImage.src})` }}>
+        <div className="container mx-auto mb-4 flex flex-wrap items-center p-5">
+          <div className="sm:w-full md:w-2/3">
+            <h1 className="text-[10em] font-[700] text-white select-none max-sm:text-[3.9em]">RINGO MAR</h1>
+            <p className="text-lg text-white select-none dark:text-gray-400">The name is ringo, get with the lingo.</p>
+          </div>
+          <div className="flex h-[450] justify-center max-sm:h-full sm:w-full md:w-1/3">
+            <Image src="/ringoringo.png" width={450} height={450} className="pointer-events-none object-contain select-none" alt="Header logo" />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+      <div className="container mx-auto mb-4 flex gap-4 max-sm:flex-col">
+        <div className="max-w-sm rounded-lg border border-gray-200 bg-white shadow-sm max-sm:mx-auto dark:border-gray-700 dark:bg-gray-800">
+          <h4 className="mb-2 border-b-1 border-b-slate-300/30 bg-gray-950/10 p-4 text-xl font-bold text-gray-900 dark:text-white">✨ Featured</h4>
+          <div className="p-6">
+            <a href="#">
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">The Time Keeper</h5>
+            </a>
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Use Kai Cenat's timer, featuring the Fortnite theme and more! Track your gaming streams with pinpoint accuracy—down to the millisecond—using our OBS Browser Source Stream Marathon Timer.</p>
+            <Link href="https://timekeeper.ringomar.com/" className="inline-flex items-center rounded-lg bg-red-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+              Use Now
+              <svg className="ms-2 h-3.5 w-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+        <div className="max-w-sm rounded-lg border border-gray-200 bg-white shadow-sm max-sm:mx-auto dark:border-gray-700 dark:bg-gray-800">
+          <div className="flex h-full flex-col justify-center p-6">
+            <a href="#">
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">First Time Chatter</h5>
+            </a>
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">A overlay that displays the real time first time chatters in a Twitch chat.</p>
+            <Link href="projects/ftc" className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              Use Now
+              <svg className="ms-2 h-3.5 w-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="container mx-auto mb-5 w-full max-w-8/10">
+        <Pagination />
+      </div>
+      <div className="bg-blue-500/10 dark:bg-blue-500/20">
+        <div className="container mx-auto w-full max-w-8/10 pb-5">
+          <div className="relative py-12 text-center">
+            <h2 className="relative inline-block bg-gradient-to-b from-black to-blue-500 bg-clip-text text-5xl font-bold text-transparent max-sm:text-3xl dark:from-gray-300 dark:text-white">
+              ENGINEERING WITH
+              <span className="absolute bottom-[-5px] left-1/2 h-[6px] w-[120%] -translate-x-1/2 rounded-full bg-blue-500 opacity-75 blur-md"></span>
+              <span className="absolute bottom-[-5px] left-1/2 h-[4px] w-[110%] -translate-x-1/2 rounded-full bg-blue-400"></span>
+            </h2>
+          </div>
+          <PoweredBy />
+        </div>
+      </div>
+    </>
   );
 }
