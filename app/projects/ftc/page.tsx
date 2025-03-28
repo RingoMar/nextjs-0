@@ -37,9 +37,9 @@ export default function firstTime() {
     };
 
     const handleRecentMessages = (data: ircMessage) => {
-      let chatter: chatmessage = {
-        username: data.tags.get("display-name"),
-        colour: data.tags.get("color") ?? "#FFFFFF",
+      const chatter: chatmessage = {
+        username: String(data.tags.get("display-name")),
+        colour: String(data.tags.get("color") ?? "#eee"),
         timesent: new Date(Number(data.tags.get("tmi-sent-ts"))),
         message: data.params[1],
       };
