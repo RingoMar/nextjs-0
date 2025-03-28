@@ -21,9 +21,14 @@ export default function Footer() {
                     Github
                   </Link>
                 </li>
-                <li>
+                <li className="mb-4">
                   <Link href="https://x.com/_ringomar" className="hover:underline">
-                    Ringomar
+                    Twitter
+                  </Link>
+                </li>
+                <li className="mb-4">
+                  <Link href="https://www.last.fm/user/Ringomous" className="hover:underline">
+                    Last.FM
                   </Link>
                 </li>
               </ul>

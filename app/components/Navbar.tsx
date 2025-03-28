@@ -12,9 +12,10 @@ export default function NavBar() {
           <span className="self-center text-2xl font-semibold whitespace-nowrap max-sm:text-lg dark:text-white">RINGO MAR</span>
         </Link>
         <div className="flex gap-4 space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-          <button type="button" className="cursor-pointer rounded-lg bg-slate-700 p-2 text-center text-sm font-medium text-white hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 focus:outline-none dark:bg-slate-600 dark:hover:bg-slate-900 dark:focus:bg-slate-800">
+          <Link href="https://github.com/ringomar" target="_blank" type="button" className="cursor-pointer rounded-lg bg-slate-700 p-2 text-center text-sm font-medium text-white hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 focus:outline-none dark:bg-slate-600 dark:hover:bg-slate-900 dark:focus:bg-slate-800">
             <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original-wordmark.svg" className="h-5 invert" width={35} height={35} alt="Github Link" />
-          </button>
+          </Link>
+          
           <ThemeSwitcher />
         </div>
         <div className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto">
