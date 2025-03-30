@@ -40,10 +40,21 @@ class twitchIRCConnection extends EventEmitter {
   }
 
   public setChannel(channel: string) {
-    this.channel = channel;
+    this.channel = channel.replace(/\s/g, "");
     if (this.connected) {
-      this._onConnect();
-      return;
+      this.connected = false;
+
+      this.emit("Connection", false);
+      this.client.close();
+      this.connect();
+    }
+  }
+
+  public TwitchDisconnect() {
+    if (this.connected) {
+      this.connected = false;
+      this.emit("Connection", false);
+      this.client.close();
     }
   }
 
@@ -96,7 +107,7 @@ class twitchIRCConnection extends EventEmitter {
       if (!this.interval) {
         this.connected = false;
 
-        this.emit("Connection", true);
+        this.emit("Connection", false);
         this.client.close();
       }
       this.connect();
@@ -108,7 +119,6 @@ class twitchIRCConnection extends EventEmitter {
       clearInterval(this.interval);
       this.interval = null;
     }
-    this.emit("Connection", true);
   }
 
   private parseIrcMessage(line: string) {
@@ -121,7 +131,7 @@ class twitchIRCConnection extends EventEmitter {
     if (line.includes("first-msg=1")) {
       this.currentCount = this.currentCount + 1;
       this.emit("NewUserCount", this.currentCount);
-      this.emit("PRIVMSG",  RinParse(line));
+      this.emit("PRIVMSG", RinParse(line));
     }
 
     return parsedMessage;

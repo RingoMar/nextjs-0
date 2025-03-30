@@ -2,8 +2,10 @@
 import CopyIcon from "@/lib/copy";
 import { TwitchIRCConnection } from "@/lib/ftcSDK/main";
 import { ReactNode, useEffect, useState } from "react";
-import { ChatLine } from "./recent";
-import { ircMessage } from "@/lib/ftcSDK/helpers";
+import { convertColor, ircMessage } from "@/lib/ftcSDK/helpers";
+import { VirtualChatList } from "./VirtualChatList";
+import { FlameBlueIcon, FlameIcon, FlamePurpleIcon } from "@/lib/flame";
+import { StartTime, Streak } from "@/lib/ftcIcons";
 
 interface FTCparams {
   channel: null | string;
@@ -12,7 +14,7 @@ interface FTCparams {
 
 interface chatmessage {
   username: string;
-  timesent: Date;
+  time: Date;
   colour: string;
   message: string;
 }
@@ -25,6 +27,8 @@ export default function firstTime() {
   const [curr, setCurr] = useState<number>(0);
   const [isConnect, setIsConnect] = useState<boolean>(false);
   const [startTime, setStartTime] = useState<Date>();
+  const [streak, setSreak] = useState<number>(0);
+  const [flame, setflame] = useState<number>(1);
   const [recentMessages, setRecentMessages] = useState<chatmessages>({ RecentMessages: [] });
   const [copyButton, setcopyButton] = useState<string | ReactNode>(<CopyIcon />);
   const [ftcParms, setFtcParms] = useState<FTCparams>({
@@ -37,12 +41,14 @@ export default function firstTime() {
     };
 
     const handleRecentMessages = (data: ircMessage) => {
+      convertColor(String(data.tags.get("color")));
       const chatter: chatmessage = {
         username: String(data.tags.get("display-name")),
         colour: String(data.tags.get("color") ?? "#eee"),
-        timesent: new Date(Number(data.tags.get("tmi-sent-ts"))),
+        time: new Date(Number(data.tags.get("tmi-sent-ts"))),
         message: data.params[1],
       };
+      setSreak(streak + 1);
       setRecentMessages((previousState) => ({
         RecentMessages: [...previousState.RecentMessages, chatter],
       }));
@@ -57,14 +63,34 @@ export default function firstTime() {
       TwitchIRCConnection.off("NewUserCount", handleData);
     };
   }, []);
-
   useEffect(() => {
-    const intervalId = setInterval(() => {}, 60000);
-    return () => clearInterval(intervalId);
+    if (streak >= 500) {
+      setflame(5);
+    } else if (streak >= 100) {
+      setflame(4);
+    } else if (streak >= 50) {
+      setflame(3);
+    } else if (streak >= 20) {
+      setflame(2);
+    } else if (streak >= 0) {
+      console.log("setting flame");
+
+      setflame(1);
+    }
   }, [curr]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (flame >= 1) {
+        setflame(flame - 1);
+      }
+      setSreak(0);
+    }, 60000);
+    return () => clearInterval(intervalId);
+  }, [streak]);
+
   function updateUrl(): string {
-    const url = new URL("http://localhost:2888/");
+    const url = new URL("http://next.ringomar.com/ftc/popout");
 
     for (const key in ftcParms) {
       if (ftcParms[key] === null || ftcParms[key] === false) {
@@ -105,7 +131,7 @@ export default function firstTime() {
   function connectChannel() {
     setFtcParms((prevtimeParms) => ({
       ...prevtimeParms,
-      channel: Channel,
+      channel: Channel.replace(/\s/g, ""),
     }));
 
     if (curr != 0) {
@@ -113,8 +139,12 @@ export default function firstTime() {
     }
 
     setStartTime(new Date());
-    TwitchIRCConnection.setChannel(Channel);
+    TwitchIRCConnection.setChannel(Channel.replace(/\s/g, ""));
     TwitchIRCConnection.connect();
+
+    setRecentMessages(() => ({
+      RecentMessages: [],
+    }));
   }
 
   return (
@@ -155,7 +185,7 @@ export default function firstTime() {
                 />
               </div>
               <div className="flex w-full gap-4">
-                <button type="submit" className="w-full rounded-lg bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                <button onClick={() => TwitchIRCConnection.TwitchDisconnect()} type="submit" className="w-full rounded-lg bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                   Disconnect
                 </button>
                 <button
@@ -169,17 +199,27 @@ export default function firstTime() {
             </div>
           </div>
           <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-5 shadow dark:border-gray-700 dark:bg-gray-800">
-            <h1 className="text-[12vh]" style={{ fontFamily: "monospace" }}>
-              {curr}
+            <h1 className={`${isConnect ? "" : "opacity-5"} text-[12vh]`} style={{ fontFamily: "monospace" }}>
+              {curr ? curr : "??"}
             </h1>
-            <div className="grid grid-cols-3">
-              <div>
-                <h3>Started Recording</h3>
-                <span>{startTime !== undefined ? `${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()}` : "--/--/-- 00:00:00"}</span>
+            <div className={`grid grid-cols-3 gap-4 ${isConnect ? "" : "opacity-5"} `}>
+              <div className="grid grid-cols-[80_1fr] justify-items-center">
+                <StartTime />
+                <div>
+                  <span>{startTime !== undefined ? `${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()}` : "--/--/-- 00:00:00"}</span>
+                  <h3 className="text-sm font-bold">Recording Since</h3>
+                </div>
               </div>
-              <div>
-                <h3>New chatters Per Mintue</h3>
-                <span>0</span>
+              <div className="grid grid-cols-[80_1fr] justify-items-center">
+                <Streak />
+                <div>
+                  <div className="flex">
+                    {flame > 0 && flame < 2 && [...Array(flame)].map((_, i) => <FlameIcon key={i} />)}
+                    {flame > 2 && flame < 4 && [...Array(flame)].map((_, i) => <FlameBlueIcon key={`blue-${i}`} />)}
+                    {flame > 3 && [...Array(flame)].map((_, i) => <FlamePurpleIcon key={`purple-${i}`} />)}
+                  </div>
+                  <h3 className="text-sm font-bold">Current Streak</h3>
+                </div>
               </div>
             </div>
           </div>
@@ -197,16 +237,7 @@ export default function firstTime() {
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 dark:border-gray-700 dark:bg-gray-800">
             <h1 className="mb-4 text-3xl font-semibold">RECENT MESSAGES</h1>
             <div className="flex h-96 flex-col-reverse overflow-auto rounded bg-gray-700">
-              <div className="flex h-5 flex-row items-center gap-x-1">
-                <span className="text-xs text-neutral-500 tabular-nums">2025-03-20 19:40:26</span> <span className="font-bold">RingoMar:</span>{" "}
-                <span>
-                  <img className="inline-block max-h-5 text-wrap" src="https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_244e79bde17940fab408f9ac4e7e78e1/default/dark/1.0" alt="zaqYoink" title="zaqYoink" />
-                  oooooooo
-                </span>
-              </div>
-              {recentMessages.RecentMessages.map((recentmessages, index) => (
-                <ChatLine key={index} {...recentmessages} />
-              ))}
+              <VirtualChatList messages={recentMessages.RecentMessages} height={400} itemHeight={20} />
             </div>
           </div>
         </div>
