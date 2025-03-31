@@ -10,19 +10,15 @@ class twitchIRCConnection extends EventEmitter {
   private interval: any;
   private channel: string;
   private client: WebSocket;
-  private timeCurrent: Date;
-  private Resetinterval: number;
   private currentCount: number;
 
-  public constructor(Resetinterval: number = 0) {
+  public constructor() {
     super();
     this.connected = false;
     this.interval = null;
     this.channel = "";
     this.client = new WebSocket("wss://irc-ws.chat.twitch.tv/");
-    this.timeCurrent = new Date();
     this.currentCount = 0;
-    this.Resetinterval = Resetinterval;
   }
 
   public connect() {
@@ -86,20 +82,9 @@ class twitchIRCConnection extends EventEmitter {
         }
         const parsed = this.parseIrcMessage(line);
         if (line === "PING :tmi.twitch.tv") {
-          // var timeDif = new Date() - this.timeCurrent;
-          // if ((timeDif / 1000) >= resetinterval && resetinterval !== 0) {
-          //   this.timeCurrent = new Date();
-          //   if (!debug) {
-          //     console.log(`Updating Ping: last ping ${this.currentCount}`);
-          //   }
-          //   this.currentCount = 0;
-          // }
           this.client.send("PONG");
           return;
         }
-        // if (debug) {
-        //   this.emit(parsed.command, parsed);
-        // }
       }
     };
 
@@ -138,9 +123,5 @@ class twitchIRCConnection extends EventEmitter {
   }
 }
 
-// const twitchIRCConnection = new TwitchIRCConnection();
-
-// twitchIRCConnection.setChannel(channel);
-// twitchIRCConnection.connect();
 
 export const TwitchIRCConnection = new twitchIRCConnection();
